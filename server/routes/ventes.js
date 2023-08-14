@@ -6,8 +6,6 @@ route.use(cors())
 const connection = require('../db_connection')
 
 route.get('/getAll', auth, async (req, res) => {
-  connection.connect()
-
   try {
     const ventes = await fetchSalesData()
     await fetchProductDataForSales(ventes)
@@ -16,7 +14,6 @@ route.get('/getAll', auth, async (req, res) => {
     console.error(error)
     res.status(500).json({ status: 'error', message: 'Internal server error' })
   }
-  connection.end()
 })
 
 async function fetchSalesData() {
@@ -63,8 +60,6 @@ async function fetchProductDataForSales(ventes) {
 }
 
 route.put('/modifyStatus/:id', auth, (req, res) => {
-  connection.connect()
-
   if (req.role !== 'admin') {
     return res.json({ status: 'ko', data: "vous n'avez pas le droit d'accès" })
   }
@@ -83,11 +78,8 @@ route.put('/modifyStatus/:id', auth, (req, res) => {
       }
     }
   )
-  connection.end()
 })
 route.put('/modifyGivenPrice/:id', auth, (req, res) => {
-  connection.connect()
-
   if (req.role !== 'admin') {
     return res.json({ status: 'ko', data: "vous n'avez pas le droit d'accès" })
   }
@@ -106,11 +98,8 @@ route.put('/modifyGivenPrice/:id', auth, (req, res) => {
       }
     }
   )
-  connection.end()
 })
 route.delete('/delete/:id', auth, (req, res) => {
-  connection.connect()
-
   const id = parseInt(req.params.id)
   if (req.role !== 'admin') {
     return res.json({ status: 'ko', data: "vous n'avez pas le droit d'accès" })
@@ -132,11 +121,9 @@ route.delete('/delete/:id', auth, (req, res) => {
       })
     }
   )
-  connection.end()
 })
 
 route.post('/addVente', auth, (req, res) => {
-  connection.connect()
   if (req.role !== 'admin' && req.role !== 'vendeur') {
     return res.json({ status: 'ko', data: "vous n'avez pas le droit d'accès" })
   }
@@ -195,7 +182,6 @@ route.post('/addVente', auth, (req, res) => {
   Promise.all(promises).then(() => {
     res.json({ status: 'ok', data: 'qte updated avec succés' })
   })
-  connection.end()
 })
 
 module.exports = route

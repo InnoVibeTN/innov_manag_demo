@@ -7,8 +7,6 @@ route.use(cors())
 
 const connection = require('../db_connection')
 route.post('/register', auth, (req, res) => {
-  connection.connect()
-
   const { nom, tel, mdp, role } = req.body
   if (req.role !== 'admin') {
     return res.json({ status: 'ko', data: "vous n'avez pas le droit d'accès" })
@@ -21,12 +19,8 @@ route.post('/register', auth, (req, res) => {
       res.json({ status: 'ok', data: results })
     }
   )
-
-  connection.end()
 })
 route.post('/login', (req, res) => {
-  connection.connect()
-
   const { nom, mdp } = req.body
 
   var query = connection.query(
@@ -57,12 +51,8 @@ route.post('/login', (req, res) => {
       })
     }
   )
-
-  connection.end()
 })
 route.delete('/delete/:id', auth, (req, res) => {
-  connection.connect()
-
   const id = parseInt(req.params.id)
   if (req.role !== 'admin') {
     return res.json({ status: 'ko', data: "vous n'avez pas le droit d'accès" })
@@ -84,12 +74,8 @@ route.delete('/delete/:id', auth, (req, res) => {
       })
     }
   )
-
-  connection.end()
 })
 route.get('/getAll', auth, (req, res) => {
-  connection.connect()
-
   console.log(req.role)
   if (req.role !== 'admin') {
     return res.json({ status: 'ko', data: "vous n'avez pas le droit d'accès" })
@@ -112,12 +98,8 @@ route.get('/getAll', auth, (req, res) => {
       res.json({ status: 'ok', data: results })
     }
   )
-
-  connection.end()
 })
 route.get('/getUser/:id', auth, (req, res) => {
-  connection.connect()
-
   if (req.role !== 'admin') {
     return res.json({ status: 'ko', data: "vous n'avez pas le droit d'accès" })
   }
@@ -131,13 +113,9 @@ route.get('/getUser/:id', auth, (req, res) => {
       res.json({ status: 'ok', data: { ...results[0], mdp: '' } })
     }
   )
-
-  connection.end()
 })
 
 route.put('/modify/:id', auth, (req, res) => {
-  connection.connect()
-
   if (req.role !== 'admin') {
     return res.json({ status: 'ko', data: "vous n'avez pas le droit d'accès" })
   }
@@ -161,8 +139,6 @@ route.put('/modify/:id', auth, (req, res) => {
       res.json({ status: 'ok', data: 'utilisateur modifier avec succés' })
     }
   )
-
-  connection.end()
 })
 
 module.exports = route

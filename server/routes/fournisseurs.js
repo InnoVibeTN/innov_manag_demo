@@ -6,7 +6,6 @@ route.use(cors())
 const connection = require('../db_connection')
 
 route.get('/getAll', auth, (req, res) => {
-  connection.connect()
   if (req.role !== 'admin') {
     return res.json({ status: 'ko', data: "vous n'avez pas le droit d'accès" })
   }
@@ -26,11 +25,9 @@ route.get('/getAll', auth, (req, res) => {
       res.json({ status: 'ok', data: results })
     }
   )
-  connection.end()
 })
 
 route.get('/getFournisseur/:id', auth, (req, res) => {
-  connection.connect()
   if (req.role !== 'admin') {
     return res.json({ status: 'ko', data: "vous n'avez pas le droit d'accès" })
   }
@@ -44,12 +41,9 @@ route.get('/getFournisseur/:id', auth, (req, res) => {
       res.json({ status: 'ok', data: results[0] })
     }
   )
-  connection.end()
 })
 
 route.post('/add', auth, (req, res) => {
-  connection.connect()
-
   const { nom, tel_four, pays } = req.body
   if (req.role !== 'admin') {
     return res.json({ status: 'ko', data: "vous n'avez pas le droit d'accès" })
@@ -66,11 +60,8 @@ route.post('/add', auth, (req, res) => {
       }
     }
   )
-  connection.end()
 })
 route.put('/modify/:id', auth, (req, res) => {
-  connection.connect()
-
   if (req.role !== 'admin') {
     return res.json({ status: 'ko', data: "vous n'avez pas le droit d'accès" })
   }
@@ -88,12 +79,9 @@ route.put('/modify/:id', auth, (req, res) => {
       res.json({ status: 'ok', data: 'fournisseurs modifier avec succés' })
     }
   )
-  connection.end()
 })
 
 route.delete('/delete/:id', auth, (req, res) => {
-  connection.connect()
-
   const id = parseInt(req.params.id)
   if (req.role !== 'admin') {
     return res.json({ status: 'ko', data: "vous n'avez pas le droit d'accès" })
@@ -114,8 +102,6 @@ route.delete('/delete/:id', auth, (req, res) => {
       })
     }
   )
-
-  connection.end()
 })
 
 module.exports = route

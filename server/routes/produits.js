@@ -11,8 +11,6 @@ route.use(express.json())
 const connection = require('../db_connection')
 
 route.get('/getAll', auth, (req, res) => {
-  connection.connect()
-
   var query = connection.query(
     'SELECT p.statue as status, p.id_prod as ref,p.nom,p.img,p.qte,p.prix,f.nom as fournisseur FROM `produits` as p ,fournisseurs as f WHERE f.id_four=p.id_four',
     function (error, results, fields) {
@@ -20,11 +18,9 @@ route.get('/getAll', auth, (req, res) => {
       res.json({ status: 'ok', data: results })
     }
   )
-  connection.end()
 })
 
 route.get('/getProd/:id', auth, (req, res) => {
-  connection.connect()
   if (req.role !== 'admin') {
     return res.json({ status: 'ko', data: "vous n'avez pas le droit d'accès" })
   }
@@ -38,7 +34,6 @@ route.get('/getProd/:id', auth, (req, res) => {
       res.json({ status: 'ok', data: results[0] })
     }
   )
-  connection.end()
   //
 })
 
@@ -46,8 +41,6 @@ route.post('/add', auth, (req, res) => {
   if (req.role !== 'admin' && req.role !== 'vendeur') {
     return res.json({ status: 'ko', data: "vous n'avez pas le droit d'accès" })
   }
-
-  connection.connect()
 
   let { ref, qte, nom, prix, fournisseur } = req.body
   let img
@@ -87,11 +80,8 @@ route.post('/add', auth, (req, res) => {
       }
     }
   )
-  connection.end()
 })
 route.put('/modify/:id', auth, (req, res) => {
-  connection.connect()
-
   if (req.role !== 'admin') {
     return res.json({ status: 'ko', data: "vous n'avez pas le droit d'accès" })
   }
@@ -130,11 +120,9 @@ route.put('/modify/:id', auth, (req, res) => {
       }
     }
   )
-  connection.end()
 })
 
 route.delete('/delete/:id', auth, (req, res) => {
-  connection.connect()
   const id = req.params.id
   if (req.role !== 'admin') {
     return res.json({ status: 'ko', data: "vous n'avez pas le droit d'accès" })
@@ -156,8 +144,6 @@ route.delete('/delete/:id', auth, (req, res) => {
       })
     }
   )
-
-  connection.end()
 })
 
 module.exports = route

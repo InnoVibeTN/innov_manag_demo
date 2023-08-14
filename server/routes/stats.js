@@ -11,8 +11,6 @@ route.use(express.json())
 
 const connection = require('../db_connection')
 route.get('/getCap', auth, (req, res) => {
-  connection.connect()
-
   if (req.role !== 'admin' && req.role !== 'comptable') {
     return res.json({
       status: 'ko',
@@ -26,11 +24,9 @@ route.get('/getCap', auth, (req, res) => {
       res.json({ status: 'ok', data: results[0] })
     }
   )
-  connection.end()
 })
 
 route.get('/getTop5', auth, (req, res) => {
-  connection.connect()
   if (req.role !== 'admin' && req.role !== 'comptable') {
     return res.json({ status: 'ko', data: "vous n'avez pas le droit d'accès" })
   }
@@ -51,11 +47,9 @@ route.get('/getTop5', auth, (req, res) => {
       res.json({ status: 'ok', data: results })
     }
   )
-  connection.end()
 })
 
 route.get('/barChart/:par', auth, (req, res) => {
-  connection.connect()
   const par = req.params.par
   if (req.role !== 'admin' && req.role !== 'comptable') {
     return res.json({ status: 'ko', data: "vous n'avez pas le droit d'accès" })
@@ -82,7 +76,6 @@ route.get('/barChart/:par', auth, (req, res) => {
       data: results,
     })
   })
-  connection.end()
 })
 
 module.exports = route

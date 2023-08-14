@@ -6,8 +6,6 @@ route.use(cors())
 const connection = require('../db_connection')
 
 route.get('/getAll', auth, (req, res) => {
-  connection.connect()
-
   if (req.role !== 'admin' && req.role !== 'vendeur') {
     return res.json({ status: 'ko', data: "vous n'avez pas le droit d'accès" })
   }
@@ -24,11 +22,9 @@ route.get('/getAll', auth, (req, res) => {
       res.json({ status: 'ok', data: results })
     }
   )
-  connection.end()
 })
 
 route.get('/getClient/:id', auth, (req, res) => {
-  connection.connect()
   if (req.role !== 'admin') {
     return res.json({ status: 'ko', data: "vous n'avez pas le droit d'accès" })
   }
@@ -42,12 +38,9 @@ route.get('/getClient/:id', auth, (req, res) => {
       res.json({ status: 'ok', data: results[0] })
     }
   )
-  connection.end()
 })
 
 route.post('/add', auth, (req, res) => {
-  connection.connect()
-
   const { nom, tel } = req.body
   if (req.role !== 'admin' && req.role !== 'vendeur') {
     return res.json({ status: 'ko', data: "vous n'avez pas le droit d'accès" })
@@ -64,10 +57,8 @@ route.post('/add', auth, (req, res) => {
       }
     }
   )
-  connection.end()
 })
 route.put('/modify/:id', auth, (req, res) => {
-  connection.connect()
   if (req.role !== 'admin') {
     return res.json({ status: 'ko', data: "vous n'avez pas le droit d'accès" })
   }
@@ -86,11 +77,9 @@ route.put('/modify/:id', auth, (req, res) => {
       }
     }
   )
-  connection.end()
 })
 
 route.delete('/delete/:id', auth, (req, res) => {
-  connection.connect()
   const id = parseInt(req.params.id)
   if (req.role !== 'admin') {
     return res.json({ status: 'ko', data: "vous n'avez pas le droit d'accès" })
@@ -112,8 +101,6 @@ route.delete('/delete/:id', auth, (req, res) => {
       })
     }
   )
-
-  connection.end()
 })
 
 module.exports = route
