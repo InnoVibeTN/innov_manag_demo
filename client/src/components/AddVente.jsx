@@ -5,8 +5,11 @@ import DatalistInput from 'react-datalist-input'
 import 'react-datalist-input/dist/styles.css'
 import { FaTrash } from 'react-icons/fa'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 function AddVente({ setAddVentePopup, toast }) {
+  const navigate = useNavigate()
+
   const [clientList, setClientList] = React.useState([])
   const [produits, setProduits] = React.useState([])
   const [products, setProducts] = React.useState([])
@@ -57,7 +60,7 @@ function AddVente({ setAddVentePopup, toast }) {
     async function getProduits() {
       try {
         const { data } = await axios.get(
-          `http://localhost:5000/api/produits/getAll`,
+          import.meta.env.VITE_SERVER_ADRESS + '/api/produits/getAll',
           {
             headers: { token: localStorage.getItem('token') },
           }
@@ -72,12 +75,13 @@ function AddVente({ setAddVentePopup, toast }) {
     async function getClients() {
       try {
         const { data } = await axios.get(
-          `http://localhost:5000/api/clients/getAll`,
+          import.meta.env.VITE_SERVER_ADRESS + '/api/clients/getAll',
           {
             headers: { token: localStorage.getItem('token') },
           }
         )
         setClientList(data.data)
+        console.log(data)
       } catch (error) {
         console.log(error)
       }
@@ -87,10 +91,10 @@ function AddVente({ setAddVentePopup, toast }) {
   async function addVente() {
     event.preventDefault()
     //add vente to database
-    console.log(vente)
+
     try {
       var { data } = await axios.post(
-        `http://localhost:5000/api/ventes/addVente`,
+        import.meta.env.VITE_SERVER_ADRESS + '/api/ventes/addVente',
         vente,
         {
           headers: { token: localStorage.getItem('token') },
@@ -100,7 +104,7 @@ function AddVente({ setAddVentePopup, toast }) {
       console.log(error)
     }
     if (data.status === 'ok') {
-      window.location = 'vente'
+      navigate(`/vente`)
     } else {
       toast.error('probleme de ajouter cette vente!', {
         position: 'top-center',

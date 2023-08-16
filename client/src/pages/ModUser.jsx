@@ -5,7 +5,11 @@ import { FaLessThan } from 'react-icons/fa'
 import { Link, useParams } from 'react-router-dom'
 import Pop from '../components/popup/Pop'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+
 function ModUser() {
+  const navigate = useNavigate()
+
   const [nom, setNom] = React.useState('')
   const [mdp, setMdp] = React.useState('')
   const [tel, setTel] = React.useState(0)
@@ -27,7 +31,7 @@ function ModUser() {
       console.log(err)
     }
     if (data.status === 'ok') {
-      window.location = '/utilisateur'
+      navigate(`/utilisateur`)
     } else {
       toast.error('probleme de modification!', {
         position: 'top-center',
@@ -53,7 +57,7 @@ function ModUser() {
       )
       console.log(data)
       if (data.useState == 'ko') {
-        window.location = '/'
+        navigate(`/`)
       } else {
         setNom(data.data.nom)
 

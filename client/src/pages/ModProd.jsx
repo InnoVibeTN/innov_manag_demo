@@ -4,7 +4,11 @@ import { FaLessThan } from 'react-icons/fa'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+
 function ModProd() {
+  const navigate = useNavigate()
+
   const ref = useParams().ref
 
   const [nom, setNom] = React.useState('')
@@ -22,7 +26,7 @@ function ModProd() {
         setNom(data.data.nom)
         setPrix(data.data.prix)
       } else {
-        window.location = '/'
+        navigate(`/`)
       }
     } catch (err) {
       console.log(err)
@@ -49,7 +53,7 @@ function ModProd() {
       console.log(err)
     }
     if (data.status === 'ok') {
-      window.location = '/produit'
+      navigate(`/produit`)
     } else {
       toast.error('probleme de modification!', {
         position: 'top-center',

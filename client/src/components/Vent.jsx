@@ -14,7 +14,8 @@ function Vent(props) {
     setDonnee(eval(donnee))
     try {
       const { data } = await axios.put(
-        `http://localhost:5000/api/ventes/modifyGivenPrice/${vente.id_v}`,
+        import.meta.env.VITE_SERVER_ADRESS +
+          `/api/ventes/modifyGivenPrice/${vente.id_v}`,
         {
           prix_donnee: eval(donnee),
         },
@@ -33,7 +34,8 @@ function Vent(props) {
     setStatus(newStatus)
     try {
       const { data } = await axios.put(
-        `http://localhost:5000/api/ventes/modifyStatus/${vente.id_v}`,
+        import.meta.env.VITE_SERVER_ADRESS +
+          `/api/ventes/modifyStatus/${vente.id_v}`,
         {
           status: newStatus,
         },

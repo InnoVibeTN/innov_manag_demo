@@ -5,7 +5,11 @@ import { FaLessThan } from 'react-icons/fa'
 import { Link, useParams } from 'react-router-dom'
 import Pop from '../components/popup/Pop'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+
 function ModFour() {
+  const navigate = useNavigate()
+
   const [nom, setNom] = React.useState('')
 
   const [tel, setTel] = React.useState(0)
@@ -28,7 +32,7 @@ function ModFour() {
     }
 
     if (data.status === 'ok') {
-      window.location = '/fournisseur'
+      navigate(`/fournisseur`)
     } else {
       toast.error('probleme de modification!', {
         position: 'top-center',
@@ -57,7 +61,7 @@ function ModFour() {
       )
 
       if (data.useState == 'ko') {
-        window.location = '/'
+        navigate(`/`)
       } else {
         setNom(data.data.nom)
 

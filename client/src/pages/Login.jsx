@@ -2,7 +2,10 @@ import React from 'react'
 import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { useNavigate } from 'react-router-dom'
+
 function Login() {
+  const navigate = useNavigate()
   const [username, setUsername] = React.useState('')
   const [password, setPassword] = React.useState('')
   async function handleLogin() {
@@ -18,6 +21,8 @@ function Login() {
       console.log(err)
     }
     if (data.status == 'ok') {
+      navigate(`/utilisateur`)
+
       localStorage.setItem('user', data.data.nom)
       localStorage.setItem('role', data.data.role)
       localStorage.setItem('token', data.data.token)
@@ -32,7 +37,6 @@ function Login() {
         progress: undefined,
         theme: 'dark',
       })
-      window.location = '/produit'
     } else {
       toast.warn('username ou mot de passe incorrect!', {
         position: 'top-center',

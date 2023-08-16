@@ -3,29 +3,12 @@ import PieChartC from '../components/PieChartC'
 import BarChartC from '../components/BarChartC'
 import Layout from '../Layout'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
-const dataList = {
-  stat: [
-    { date: '2016', rentable: 99999 },
-    { date: '2017', rentable: 54899 },
-    { date: '2018', rentable: 100000 },
-    { date: '2019', rentable: 45641 },
-    { date: '2020', rentable: 54899 },
-    { date: '2021', rentable: 100000 },
-    { date: '2022', rentable: 45641 },
-    { date: '2023', rentable: 45641 },
-  ],
-  topFive: [
-    { nom: 'prod1', prix: 500 },
-    { nom: 'prod2', prix: 700 },
-    { nom: 'prod3', prix: 1200 },
-    { nom: 'prod4', prix: 550 },
-    { nom: 'prod5', prix: 1000 },
-  ],
-  capital: 9999.99,
-}
 function Statistique() {
-  const [data, setData] = React.useState(dataList || [])
+  const navigate = useNavigate()
+
+  const [data, setData] = React.useState([])
   const [capital, setCapital] = React.useState(0)
   const [topFive, setTopFive] = React.useState([])
   const [barChartData, setBarChartData] = React.useState([])
@@ -40,7 +23,7 @@ function Statistique() {
         }
       )
       if (data.status === 'ko') {
-        window.location.href = '/produit'
+        navigate(`/produit`)
       } else {
         setCapital(data.data.cap)
       }
@@ -58,7 +41,7 @@ function Statistique() {
         }
       )
       if (data.status === 'ko') {
-        window.location.href = '/produit'
+        navigate(`/produit`)
       } else {
         console.log(data)
         setTopFive(data.data)
@@ -77,7 +60,7 @@ function Statistique() {
         }
       )
       if (data.status === 'ko') {
-        window.location.href = '/produit'
+        navigate(`/produit`)
       } else {
         console.log(data)
         setBarChartData(data.data)

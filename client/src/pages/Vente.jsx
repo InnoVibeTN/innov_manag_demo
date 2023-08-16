@@ -19,7 +19,7 @@ function Vente() {
   async function deleteVente(mat) {
     try {
       var { data } = await axios.delete(
-        `http://localhost:5000/api/ventes/delete/${mat}`,
+        import.meta.env.VITE_SERVER_ADRESS + `/api/ventes/delete/${mat}`,
         { headers: { token: localStorage.getItem('token') } }
       )
     } catch (err) {

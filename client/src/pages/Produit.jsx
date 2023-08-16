@@ -14,8 +14,11 @@ import { IoGridSharp } from 'react-icons/io5'
 import { FaCartShopping } from 'react-icons/fa6'
 import DatalistInput from 'react-datalist-input'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 function Produits() {
+  const navigate = useNavigate()
+
   const [addProdPopup, setAddProdPopup] = React.useState(false)
   const [prodLabelPopup, setProdLabelPopup] = React.useState(false)
   const [QrPopup, setQrPopup] = React.useState(false)
@@ -96,7 +99,7 @@ function Produits() {
       if (data.status === 'ok') {
         setClients(data.data)
       } else {
-        window.location = '/'
+        navigate(`/`)
       }
     } catch (error) {
       console.log(error)
@@ -130,7 +133,7 @@ function Produits() {
       if (data.status === 'ok') {
         setFournisseurs(data.data)
       } else {
-        window.location = '/'
+        navigate(`/`)
       }
     } catch (error) {
       console.log(error)

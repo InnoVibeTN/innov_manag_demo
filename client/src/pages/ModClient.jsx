@@ -4,9 +4,12 @@ import 'react-toastify/dist/ReactToastify.css'
 import { FaLessThan } from 'react-icons/fa'
 import { Link, useParams } from 'react-router-dom'
 import axios from 'axios'
-
 import Pop from '../components/popup/Pop'
+import { useNavigate } from 'react-router-dom'
+
 function ModClient() {
+  const navigate = useNavigate()
+
   const [nom, setNom] = React.useState('')
 
   const [tel, setTel] = React.useState(0)
@@ -27,7 +30,7 @@ function ModClient() {
       console.log(err)
     }
     if (data.status === 'ok') {
-      window.location = '/client'
+      return redirect('/client')
     } else {
       toast.error('probleme de modification!', {
         position: 'top-center',
@@ -53,7 +56,7 @@ function ModClient() {
       )
 
       if (data.useState == 'ko') {
-        window.location = '/'
+        navigate(`/`)
       } else {
         console.log(data)
         setNom(data.data.nom)

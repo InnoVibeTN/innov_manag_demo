@@ -8,8 +8,11 @@ import 'react-toastify/dist/ReactToastify.css'
 import Cli from '../components/Cli'
 
 import AddClient from '../components/AddClient'
+import { useNavigate } from 'react-router-dom'
 
 function Client() {
+  const navigate = useNavigate()
+
   const [addClientPopup, setAddClientPopup] = React.useState(false)
   const [clients, setClients] = React.useState([])
   async function getAllClients() {
@@ -25,7 +28,7 @@ function Client() {
       if (data.status === 'ok') {
         setClients(data.data)
       } else {
-        window.location = '/'
+        navigate(`/`)
       }
     } catch (error) {
       console.log(error)

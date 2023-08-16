@@ -26,6 +26,7 @@ function App() {
       <Route path='/client/:id' element={<ModClient />} />
       <Route path='/statistique' element={<Statistique />} />
       <Route path='/vente' element={<Vente />} />
+      <Route path='*' element={<p>404 page not found</p>} />
     </Routes>
   )
 }

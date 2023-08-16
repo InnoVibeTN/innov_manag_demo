@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { CiMenuBurger } from 'react-icons/ci'
 
 import { RiCloseFill } from 'react-icons/ri'
+import { useNavigate } from 'react-router-dom'
 
 const routes = [
   { route: 'produit', access: ['vendeur', 'admin', 'comptable'] },
@@ -15,13 +16,15 @@ const routes = [
   { route: 'statistique', access: ['admin', 'comptable'] },
 ]
 function Nav() {
+  const navigate = useNavigate()
+
   const [hidden, setHidden] = React.useState(true)
   React.useEffect(() => {
     //fetching data
   }, [])
   function handleLogout() {
     localStorage.clear()
-    window.location = '/'
+    navigate(`/`)
   }
   const currentRoute = window.location.pathname.substring(1)
   return (

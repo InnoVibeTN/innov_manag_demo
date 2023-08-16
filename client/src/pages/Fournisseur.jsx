@@ -6,7 +6,11 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Four from '../components/Four'
 import AddFour from '../components/AddFour'
+import { useNavigate } from 'react-router-dom'
+
 function Fournisseur() {
+  const navigate = useNavigate()
+
   const [addFourPopup, setAddFourPopup] = React.useState(false)
   const [fournisseurs, setFournisseurs] = React.useState([])
   async function getAllFounisseurs() {
@@ -22,7 +26,7 @@ function Fournisseur() {
       if (data.status === 'ok') {
         setFournisseurs(data.data)
       } else {
-        window.location = '/'
+        navigate(`/`)
       }
     } catch (error) {
       console.log(error)

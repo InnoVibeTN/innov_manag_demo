@@ -6,8 +6,11 @@ import axios from 'axios'
 import AddUser from '../components/AddUser'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { useNavigate } from 'react-router-dom'
 
 function Utilisateur() {
+  const navigate = useNavigate()
+
   const [addUserPopup, setAddUserPopup] = React.useState(false)
   const [users, setUsers] = React.useState([])
   async function getAllUsers() {
@@ -24,7 +27,7 @@ function Utilisateur() {
       if (data.status === 'ok') {
         setUsers(data.data)
       } else {
-        window.location = '/'
+        navigate(`/`)
       }
     } catch (error) {
       console.log(error)
