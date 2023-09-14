@@ -1,16 +1,33 @@
-import React from 'react'
-import Pop from './popup/Pop'
+import React from 'react';
+import Pop from './popup/Pop';
+import axios from 'axios';
 function AddClient({ setClients, clients, setAddClientPopup, toast }) {
-  const [nom, setNom] = React.useState('')
-  const [tel, setTel] = React.useState(0)
-  function addClient(client) {
-    event.preventDefault()
-    const newClient = client
-
-    if (true) {
-      let newClients = clients
-      newClients.unshift(newClient)
-      setClients(newClients)
+  const [nom, setNom] = React.useState('');
+  const [tel, setTel] = React.useState(0);
+  async function addClient(client) {
+    event.preventDefault();
+    const newClient = client;
+    try {
+      var { data } = await axios.post(
+        import.meta.env.VITE_SERVER_ADRESS + '/api/clients/add',
+        {
+          nom,
+          tel,
+        },
+        {
+          headers: {
+            token: localStorage.getItem('token'),
+          },
+        }
+      );
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+    if (data.status === 'ok') {
+      let newClients = clients;
+      newClients.unshift(newClient);
+      setClients(newClients);
       toast.success('client a été ajouter avec succées', {
         position: 'top-center',
         autoClose: 5000,
@@ -20,7 +37,7 @@ function AddClient({ setClients, clients, setAddClientPopup, toast }) {
         draggable: true,
         progress: undefined,
         theme: 'dark',
-      })
+      });
     } else {
       toast.error("probleme d'ajout!", {
         position: 'top-center',
@@ -31,7 +48,7 @@ function AddClient({ setClients, clients, setAddClientPopup, toast }) {
         draggable: true,
         progress: undefined,
         theme: 'dark',
-      })
+      });
     }
     //
   }
@@ -53,14 +70,14 @@ function AddClient({ setClients, clients, setAddClientPopup, toast }) {
             value={tel}
             max={9999999}
             onChange={(e) => {
-              if (e.target.value.length <= 8) setTel(e.target.value)
+              if (e.target.value.length <= 8) setTel(e.target.value);
             }}
           />
         </div>
         <button onClick={() => addClient({ nom, tel })}>Ajouter</button>
       </form>
     </Pop>
-  )
+  );
 }
 
-export default AddClient
+export default AddClient;

@@ -1,56 +1,57 @@
-import React from 'react'
-import { useState } from 'react'
-import { AiFillPlusCircle } from 'react-icons/ai'
-import Prod from './../components/Prod'
-import Layout from '../Layout'
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
-import AddProd from '../components/AddProd'
-import Label from '../components/Label'
-import { BsQrCode } from 'react-icons/bs'
-import QrCodeScanner from '../components/QrCodeScanner'
-import { BsList } from 'react-icons/bs'
-import { IoGridSharp } from 'react-icons/io5'
-import { FaCartShopping } from 'react-icons/fa6'
-import DatalistInput from 'react-datalist-input'
-import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import React from 'react';
+import { useState } from 'react';
+import { AiFillPlusCircle } from 'react-icons/ai';
+import Prod from './../components/Prod';
+import Layout from '../Layout';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import AddProd from '../components/AddProd';
+import Label from '../components/Label';
+import { BsQrCode } from 'react-icons/bs';
+import QrCodeScanner from '../components/QrCodeScanner';
+import { BsList } from 'react-icons/bs';
+import { IoGridSharp } from 'react-icons/io5';
+import { FaCartShopping } from 'react-icons/fa6';
+import DatalistInput from 'react-datalist-input';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function Produits() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const [addProdPopup, setAddProdPopup] = React.useState(false)
-  const [prodLabelPopup, setProdLabelPopup] = React.useState(false)
-  const [QrPopup, setQrPopup] = React.useState(false)
-  const [vendrePopup, setVendrePopup] = React.useState(false)
-  const [originalProducts, setOriginalProducts] = React.useState([])
-  const [products, setProducts] = React.useState(originalProducts || [])
-  const [labelData, setLabelData] = React.useState({})
-  const [prodData, setProdData] = React.useState({})
-  const [filter, setFilter] = React.useState('')
-  const [remise, setRemise] = React.useState('')
-  const [prixTot, setPrixTot] = React.useState(0)
-  const [tot, setTot] = React.useState(0)
-  const [client, setClient] = React.useState('')
-  const [clients, setClients] = React.useState([])
-  const [view, setView] = useState('list')
-  const [fournisseurs, setFournisseurs] = React.useState([])
+  const [addProdPopup, setAddProdPopup] = React.useState(false);
+  const [prodLabelPopup, setProdLabelPopup] = React.useState(false);
+  const [QrPopup, setQrPopup] = React.useState(false);
+  const [vendrePopup, setVendrePopup] = React.useState(false);
+  const [originalProducts, setOriginalProducts] = React.useState([]);
+  const [products, setProducts] = React.useState(originalProducts || []);
+  const [labelData, setLabelData] = React.useState({});
+  const [prodData, setProdData] = React.useState({});
+  const [filter, setFilter] = React.useState('');
+  const [remise, setRemise] = React.useState('0');
+  const [prixTot, setPrixTot] = React.useState(0);
+  const [prixDonnee, setPrixDonnee] = React.useState(0);
+  const [tot, setTot] = React.useState(0);
+  const [client, setClient] = React.useState('');
+  const [clients, setClients] = React.useState([]);
+  const [view, setView] = useState('list');
+  const [fournisseurs, setFournisseurs] = React.useState([]);
   // Add a new state for wishlist
-  const [wishlist, setWishlist] = useState([])
-  const [wishlistState, setWishlistState] = React.useState(false)
+  const [wishlist, setWishlist] = useState([]);
+  const [wishlistState, setWishlistState] = React.useState(false);
   async function addVente() {
     try {
       const { data } = await axios.post(
         import.meta.env.VITE_SERVER_ADRESS + '/api/ventes/addVente',
         {
-          client: client,
+          client: client ? client : '1',
           remise: remise,
           produits: wishlist.map((item) => ({
             ref: item.ref,
             qte: item.quantity,
             prix: item.prix,
           })),
-          prixDonnee: prixTot,
+          prixDonnee: prixDonnee,
           tot: tot,
         },
         {
@@ -58,7 +59,7 @@ function Produits() {
             token: localStorage.getItem('token'),
           },
         }
-      )
+      );
       if (data.status === 'ok') {
         toast.success('vente a été ajouté avec succées', {
           position: 'top-center',
@@ -69,7 +70,7 @@ function Produits() {
           draggable: true,
           progress: undefined,
           theme: 'dark',
-        })
+        });
       } else {
         toast.error('probleme de l ajout de la vente!', {
           position: 'top-center',
@@ -80,10 +81,10 @@ function Produits() {
           draggable: true,
           progress: undefined,
           theme: 'dark',
-        })
+        });
       }
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   }
   async function getAllClients() {
@@ -95,14 +96,14 @@ function Produits() {
             token: localStorage.getItem('token'),
           },
         }
-      )
+      );
       if (data.status === 'ok') {
-        setClients(data.data)
+        setClients(data.data);
       } else {
-        navigate(`/`)
+        navigate(`/`);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
   async function getAllProducts() {
@@ -114,10 +115,10 @@ function Produits() {
             token: localStorage.getItem('token'),
           },
         }
-      )
-      setOriginalProducts(data.data)
+      );
+      setOriginalProducts(data.data);
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   }
   async function getAllFounisseurs() {
@@ -129,23 +130,23 @@ function Produits() {
             token: localStorage.getItem('token'),
           },
         }
-      )
+      );
       if (data.status === 'ok') {
-        setFournisseurs(data.data)
+        setFournisseurs(data.data);
       } else {
-        navigate(`/`)
+        navigate(`/`);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
   // Function to handle adding and removing from the wishlist
   function handleWishlist(prod) {
-    const prodClicked = wishlist.find((item) => item.ref === prod.ref)
+    const prodClicked = wishlist.find((item) => item.ref === prod.ref);
     if (prodClicked) {
-      handleQuantityChange(prodClicked.ref, prodClicked.quantity + 1)
+      handleQuantityChange(prodClicked.ref, prodClicked.quantity + 1);
     } else {
-      setWishlist([...wishlist, { ...prod, quantity: 1 }])
+      setWishlist([...wishlist, { ...prod, quantity: 1 }]);
     }
   }
   function handleQuantityChange(prodRef, quantity) {
@@ -153,10 +154,10 @@ function Produits() {
       wishlist.map((item) =>
         item.ref === prodRef ? { ...item, quantity: quantity } : item
       )
-    )
+    );
   }
   function handleDeleteFromWL(prodRef) {
-    setWishlist(wishlist.filter((item) => item.ref !== prodRef))
+    setWishlist(wishlist.filter((item) => item.ref !== prodRef));
   }
   async function deleteProd(ref) {
     try {
@@ -167,10 +168,10 @@ function Produits() {
             token: localStorage.getItem('token'),
           },
         }
-      )
-      console.log(data)
+      );
+      console.log(data);
     } catch (err) {
-      console.log(err)
+      console.log(err);
       toast.error('probleme de retirer le produit!', {
         position: 'top-center',
         autoClose: 5000,
@@ -180,11 +181,11 @@ function Produits() {
         draggable: true,
         progress: undefined,
         theme: 'dark',
-      })
+      });
     }
     if (data && data.status === 'ok') {
-      const filteredProds = originalProducts.filter((prod) => ref !== prod.ref)
-      setOriginalProducts(filteredProds)
+      const filteredProds = originalProducts.filter((prod) => ref !== prod.ref);
+      setOriginalProducts(filteredProds);
       toast.success('produit a été retirer avec succées', {
         position: 'top-center',
         autoClose: 5000,
@@ -194,21 +195,21 @@ function Produits() {
         draggable: true,
         progress: undefined,
         theme: 'dark',
-      })
+      });
     }
   }
   function prepareLabel(prod) {
-    setProdLabelPopup(true)
-    setLabelData(prod)
+    setProdLabelPopup(true);
+    setLabelData(prod);
   }
   function prepareVendre(prod) {
-    setVendrePopup(true)
-    setProdData(prod)
+    setVendrePopup(true);
+    setProdData(prod);
   }
 
   React.useEffect(() => {
     if (filter === '') {
-      setProducts(originalProducts)
+      setProducts(originalProducts);
     } else {
       setProducts(
         originalProducts.filter(
@@ -218,23 +219,24 @@ function Produits() {
             prod.ref.substring(0, filter.length).toUpperCase() ===
               filter.toUpperCase()
         )
-      )
+      );
     }
-  }, [filter, originalProducts])
+  }, [filter, originalProducts]);
   React.useEffect(() => {
-    let somme = 0
+    let somme = 0;
     for (let prod of wishlist) {
-      somme += prod.prix * prod.quantity
+      somme += prod.prix * prod.quantity;
     }
-    setTot(somme)
-    somme = somme - (somme / 100) * remise
-    setPrixTot(somme)
-  }, [wishlist, remise])
+    setTot(somme);
+    somme = somme - (somme / 100) * remise;
+    setPrixTot(somme);
+    setPrixDonnee(somme);
+  }, [wishlist, remise]);
   React.useEffect(() => {
-    getAllProducts()
-    getAllFounisseurs()
-    getAllClients()
-  }, [])
+    getAllProducts();
+    getAllFounisseurs();
+    getAllClients();
+  }, []);
   return (
     <>
       <Layout>
@@ -250,10 +252,15 @@ function Produits() {
               onClick={() => setAddProdPopup(true)}
             />
           )}
-          <FaCartShopping
-            className='hidden md:block text-primary z-20 cursor-pointer text-3xl absolute lg:fixed top-25 left-28'
+          <div
+            className='hidden md:block  z-20 cursor-pointer  absolute lg:fixed top-23 left-28'
             onClick={() => setWishlistState((prev) => !prev)}
-          />
+          >
+            <div className='relative -bottom-2 -left-2 h-5 w-5 p-3 rounded-full flex items-center justify-center bg-signM text-[white]'>
+              {wishlist.length}
+            </div>
+            <FaCartShopping className='text-3xl text-primary' />
+          </div>
           {/*Search Bar*/}
           <div className='relative left-[50%] translate-x-[-50%]   mt-5 flex items-stretch justify-center'>
             <input
@@ -316,10 +323,21 @@ function Produits() {
                 ) : (
                   <>
                     <h5>Prix Total: {prixTot}TND</h5>
+                    <DatalistInput
+                      placeholder='Client:  passagé'
+                      onSelect={(item) => {
+                        event.preventDefault();
+                        setClient(item.id);
+                      }}
+                      items={clients.map((clii) => {
+                        return { id: clii.id, value: clii.nom };
+                      })}
+                    />
+
                     {wishlist.map((item) => (
                       <div
                         key={item.ref}
-                        className=' bg-primary w-[90%] rounded-md p-2 flex items-stretch justify-between shadow-md '
+                        className=' bg-[white]  w-[90%] rounded-md p-2 flex items-stretch justify-between shadow-md '
                       >
                         <img
                           src={
@@ -328,9 +346,9 @@ function Produits() {
                             item.img
                           }
                           alt={item.nom}
-                          className='w-20 h-20  rounded-xl '
+                          className='w-20 h-20  rounded-xl border border-primary'
                         />
-                        <div className='flex flex-col items-center justify-between text-sm'>
+                        <div className='flex flex-col items-center justify-between text-sm text-[black]'>
                           <h3>{item.nom}</h3>
 
                           <p>Quantite:</p>
@@ -344,7 +362,10 @@ function Produits() {
                             }
                           />
                         </div>
-                        <button onClick={() => handleDeleteFromWL(item.ref)}>
+                        <button
+                          className='text-[red]'
+                          onClick={() => handleDeleteFromWL(item.ref)}
+                        >
                           X
                         </button>
                         {/* You can add other item details if needed */}
@@ -354,23 +375,26 @@ function Produits() {
                 )}
               </div>
               <div className='absolute bg-forth bottom-2 flex flex-col items-center w-full gap-2'>
-                <DatalistInput
-                  placeholder='Client'
-                  onSelect={(item) => {
-                    event.preventDefault()
-                    setClient(item.id)
-                  }}
-                  items={clients.map((clii) => {
-                    return { id: clii.id, value: clii.nom }
-                  })}
-                />
-                <input
-                  type='number'
-                  placeholder='remise %'
-                  value={remise}
-                  onChange={(e) => setRemise(e.target.value)}
-                  className='px-2 py-1 rounded-md text-[black] w-[90%]'
-                />
+                <div className='flex flex-col w-[90%] justify-center '>
+                  <label htmlFor=''>prix donnée</label>
+                  <input
+                    type='number'
+                    placeholder='TND'
+                    value={prixDonnee}
+                    onChange={(e) => setPrixDonnee(e.target.value)}
+                    className='px-2 py-1 rounded-md text-[black] w-[100%]'
+                  />
+                </div>
+                <div className='flex flex-col w-[90%] justify-center '>
+                  <label htmlFor=''>remise</label>
+                  <input
+                    type='number'
+                    placeholder='remise %'
+                    value={remise}
+                    onChange={(e) => setRemise(e.target.value)}
+                    className='px-2 py-1 rounded-md text-[black] w-[100%]'
+                  />
+                </div>
                 <button
                   className=' w-[90%] px-3 py-1  bg-secondary text-forth font-semibold rounded-lg transition-all hover:bg-forth hover:text-secondary hover:shadow-xl'
                   onClick={addVente}
@@ -428,7 +452,7 @@ function Produits() {
         <QrCodeScanner setFilter={setFilter} setQrPopup={setQrPopup} />
       )}
     </>
-  )
+  );
 }
 
-export default Produits
+export default Produits;

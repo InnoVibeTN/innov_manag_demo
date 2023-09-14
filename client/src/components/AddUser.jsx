@@ -1,14 +1,14 @@
-import React from 'react'
-import Pop from './popup/Pop'
-import axios from 'axios'
+import React from 'react';
+import Pop from './popup/Pop';
+import axios from 'axios';
 function AddUser({ getAllUsers, setUsers, users, setAddUserPopup, toast }) {
-  const [nom, setNom] = React.useState('')
-  const [mdp, setMdp] = React.useState('')
-  const [tel, setTel] = React.useState(0)
-  const [role, setRole] = React.useState('vendeur')
+  const [nom, setNom] = React.useState('');
+  const [mdp, setMdp] = React.useState('');
+  const [tel, setTel] = React.useState(0);
+  const [role, setRole] = React.useState('vendeur');
   async function addUser(user) {
-    event.preventDefault()
-    const newUser = user
+    event.preventDefault();
+    const newUser = user;
 
     try {
       var res = await axios.post(
@@ -24,13 +24,13 @@ function AddUser({ getAllUsers, setUsers, users, setAddUserPopup, toast }) {
             token: localStorage.getItem('token'),
           },
         }
-      )
+      );
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
 
     if (res.data.data.affectedRows > 0) {
-      getAllUsers()
+      getAllUsers();
       toast.success('utilisateur a été ajouter avec succées', {
         position: 'top-center',
         autoClose: 5000,
@@ -40,7 +40,7 @@ function AddUser({ getAllUsers, setUsers, users, setAddUserPopup, toast }) {
         draggable: true,
         progress: undefined,
         theme: 'dark',
-      })
+      });
     } else {
       toast.error("probleme d'ajout!", {
         position: 'top-center',
@@ -51,7 +51,7 @@ function AddUser({ getAllUsers, setUsers, users, setAddUserPopup, toast }) {
         draggable: true,
         progress: undefined,
         theme: 'dark',
-      })
+      });
     }
     //
   }
@@ -73,7 +73,7 @@ function AddUser({ getAllUsers, setUsers, users, setAddUserPopup, toast }) {
             value={tel}
             max={9999999}
             onChange={(e) => {
-              if (e.target.value.length <= 8) setTel(e.target.value)
+              if (e.target.value.length <= 8) setTel(e.target.value);
             }}
           />
         </div>
@@ -105,6 +105,6 @@ function AddUser({ getAllUsers, setUsers, users, setAddUserPopup, toast }) {
         </button>
       </form>
     </Pop>
-  )
+  );
 }
-export default AddUser
+export default AddUser;

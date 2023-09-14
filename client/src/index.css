@@ -4,17 +4,55 @@
 @tailwind utilities;
 * {
   font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
 }
 /* width */
 
-*::-webkit-scrollbar {
-  display: none;
+/* Hide scrollbar for IE, Edge and Firefox */
+
+body {
+  background: url(./assets/bg.png) fixed no-repeat;
+  background-size: 110% 100%;
+  background-position: center;
 }
 
-/* Hide scrollbar for IE, Edge and Firefox */
-* {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+.loginBg {
+  background: url(./assets/loginBg.png) fixed no-repeat;
+  background-size: 101% 101%;
+  background-position: center;
+}
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-button {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: #e061b2;
+  border: 0px none #ffffff;
+  border-radius: 41px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #63d2ee;
+}
+::-webkit-scrollbar-thumb:active {
+  background: #000000;
+}
+::-webkit-scrollbar-track {
+  background: #5da9e3;
+  border: 0px none #ffffff;
+  border-radius: 100px;
+}
+::-webkit-scrollbar-track:hover {
+  background: #ffffff;
+}
+::-webkit-scrollbar-track:active {
+  background: #ffffff;
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
 }
 .form {
   margin-top: 5vh;
@@ -46,7 +84,7 @@
 }
 .form button {
   border-radius: 10px;
-  background: #061b4a;
+  background: #e061b2;
   color: white;
   width: 40%;
   padding: 5px;

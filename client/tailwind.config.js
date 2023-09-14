@@ -4,10 +4,10 @@ export default {
   theme: {
     extend: {},
     colors: {
-      primary: '#3d4d72' /*'#061B4A '*/,
-      secondary: '#FFD537 ',
+      primary: '#5DA9E3' /*'#061B4A '*/,
+      secondary: '#E061B2 ',
       third: '#FFFFFF',
-      forth: '#061b4a',
+      forth: '#5DA9E3',
       aux: '#707070',
       signP: '#9DF6A6',
       signM: '#BC1313',
@@ -30,4 +30,4 @@ export default {
     },
   },
   plugins: [],
-}
+};

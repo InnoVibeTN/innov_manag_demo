@@ -1,38 +1,38 @@
-const express = require('express')
-const route = express.Router()
-const cors = require('cors')
-const auth = require('../middlewares/auth')
-route.use(cors())
-const connection = require('../db_connection')
+const express = require('express');
+const route = express.Router();
+const cors = require('cors');
+const auth = require('../middlewares/auth');
+route.use(cors());
+const connection = require('../db_connection');
 
 route.get('/getAll', auth, async (req, res) => {
   try {
-    const ventes = await fetchSalesData()
-    await fetchProductDataForSales(ventes)
-    res.json({ status: 'ok', data: ventes })
+    const ventes = await fetchSalesData();
+    await fetchProductDataForSales(ventes);
+    res.json({ status: 'ok', data: ventes });
   } catch (error) {
-    console.error(error)
-    res.status(500).json({ status: 'error', message: 'Internal server error' })
+    console.error(error);
+    res.status(500).json({ status: 'error', message: 'Internal server error' });
   }
-})
+});
 
 async function fetchSalesData() {
   return new Promise((resolve, reject) => {
     connection.query(
-      `SELECT c.nom as nomClient, u.nom as nomUtilisateur, v.id_v, v.prix_donnee, v.date_v, v.statue,( v.prix_tot-(v.prix_tot /100) *v.remise) as prix_tot
+      `SELECT c.nom as nomClient, u.nom as nomUtilisateur, v.id_v, v.prix_donnee, v.date_v, ( v.prix_tot-(v.prix_tot /100) *v.remise) as prix_tot
        FROM ventes v
        JOIN clients c ON v.id_client = c.id_client
        JOIN utilisateurs u ON v.id_utilisateur = u.id_utilisateur
        ORDER BY v.date_v DESC`,
       (error, results) => {
         if (error) {
-          reject(error)
+          reject(error);
         } else {
-          resolve(results)
+          resolve(results);
         }
       }
-    )
-  })
+    );
+  });
 }
 
 async function fetchProductDataForSales(ventes) {
@@ -46,101 +46,81 @@ async function fetchProductDataForSales(ventes) {
         [vente.id_v],
         (error, results) => {
           if (error) {
-            reject(error)
+            reject(error);
           } else {
-            vente.produits = results
-            resolve()
+            vente.produits = results;
+            resolve();
           }
         }
-      )
-    })
-  })
+      );
+    });
+  });
 
-  await Promise.all(promises)
+  await Promise.all(promises);
 }
 
-route.put('/modifyStatus/:id', auth, (req, res) => {
-  if (req.role !== 'admin') {
-    return res.json({ status: 'ko', data: "vous n'avez pas le droit d'accès" })
-  }
-  const id = parseInt(req.params.id)
-  const { status } = req.body
-
-  var query = connection.query(
-    'UPDATE ventes SET statue = ? WHERE id_v= ?',
-    [status, id],
-    function (error, results, fields) {
-      if (error) throw error
-      if (results.affectedRows > 0) {
-        res.json({ status: 'ok', data: 'vente modifié avec succés' })
-      } else {
-        res.json({ status: 'ko', data: 'vente errone' })
-      }
-    }
-  )
-})
 route.put('/modifyGivenPrice/:id', auth, (req, res) => {
   if (req.role !== 'admin') {
-    return res.json({ status: 'ko', data: "vous n'avez pas le droit d'accès" })
+    return res.json({ status: 'ko', data: "vous n'avez pas le droit d'accès" });
   }
-  const id = parseInt(req.params.id)
-  const { prix_donnee } = req.body
+  const id = parseInt(req.params.id);
+  const { prix_donnee } = req.body;
 
   var query = connection.query(
     'UPDATE ventes SET prix_donnee = ? WHERE id_v= ?',
     [prix_donnee, id],
     function (error, results, fields) {
-      if (error) throw error
+      if (error) throw error;
       if (results.affectedRows > 0) {
-        res.json({ status: 'ok', data: 'vente modifié avec succés' })
+        res.json({ status: 'ok', data: 'vente modifié avec succés' });
       } else {
-        res.json({ status: 'ko', data: 'vente errone' })
+        res.json({ status: 'ko', data: 'vente errone' });
       }
     }
-  )
-})
+  );
+});
 route.delete('/delete/:id', auth, (req, res) => {
-  const id = parseInt(req.params.id)
+  const id = parseInt(req.params.id);
   if (req.role !== 'admin') {
-    return res.json({ status: 'ko', data: "vous n'avez pas le droit d'accès" })
+    return res.json({ status: 'ko', data: "vous n'avez pas le droit d'accès" });
   }
 
   var query = connection.query(
     'DELETE FROM ventes WHERE id_v =?  ',
     [id],
     function (error, results, fields) {
-      if (error) throw error
+      if (error) throw error;
 
       if (results.affectedRows <= 0) {
-        return res.json({ status: 'ko', data: 'vente non trouve' })
+        return res.json({ status: 'ko', data: 'vente non trouve' });
       }
 
       res.json({
         status: 'ok',
         data: 'vente supprier ave succes',
-      })
+      });
     }
-  )
-})
+  );
+});
 
 route.post('/addVente', auth, (req, res) => {
   if (req.role !== 'admin' && req.role !== 'vendeur') {
-    return res.json({ status: 'ko', data: "vous n'avez pas le droit d'accès" })
+    return res.json({ status: 'ko', data: "vous n'avez pas le droit d'accès" });
   }
 
-  let { client, id_utilisateur, tot, produits, remise, prixDonnee } = req.body
-  id_utilisateur = parseInt(req.idUser)
-  remise = parseFloat(remise)
-  prixDonnee = parseFloat(prixDonnee)
-  tot = tot * (1 - remise / 100)
+  let { client, id_utilisateur, tot, produits, remise, prixDonnee } = req.body;
+  id_utilisateur = parseInt(req.idUser);
+  remise = parseFloat(remise);
+  prixDonnee = parseFloat(prixDonnee);
+  tot = tot * (1 - remise / 100);
 
   var query = connection.query(
-    'INSERT INTO ventes values (?,?,?,?,?,?,?,?) ',
-    [null, client, tot, prixDonnee, remise, id_utilisateur, new Date(), 1],
+    'INSERT INTO ventes values (?,?,?,?,?,?,?) ',
+    [null, client, tot, prixDonnee, remise, id_utilisateur, new Date()],
     function (error, results, fields) {
-      if (error) throw error
+      if (error) throw error;
       if (results.affectedRows > 0) {
-        const id_v = results.insertId
+        const id_v = results.insertId;
         const promises = produits.map(async (produit) => {
           return new Promise((resolve, reject) => {
             connection.query(
@@ -148,22 +128,22 @@ route.post('/addVente', auth, (req, res) => {
               [produit.ref, id_v, produit.qte],
               (error, results) => {
                 if (error) {
-                  reject(error)
+                  reject(error);
                 } else {
-                  resolve()
+                  resolve();
                 }
               }
-            )
-          })
-        })
+            );
+          });
+        });
         Promise.all(promises).then(() => {
-          console.log('vente ajouté avec succés')
-        })
+          console.log('vente ajouté avec succés');
+        });
       } else {
-        return res.json({ status: 'ko', data: 'vente non ajouté' })
+        return res.json({ status: 'ko', data: 'vente non ajouté' });
       }
     }
-  )
+  );
   const promises = produits.map(async (produit) => {
     return new Promise((resolve, reject) => {
       connection.query(
@@ -171,17 +151,17 @@ route.post('/addVente', auth, (req, res) => {
         [produit.qte, produit.ref],
         (error, results) => {
           if (error) {
-            reject(error)
+            reject(error);
           } else {
-            resolve()
+            resolve();
           }
         }
-      )
-    })
-  })
+      );
+    });
+  });
   Promise.all(promises).then(() => {
-    res.json({ status: 'ok', data: 'qte updated avec succés' })
-  })
-})
+    res.json({ status: 'ok', data: 'qte updated avec succés' });
+  });
+});
 
-module.exports = route
+module.exports = route;

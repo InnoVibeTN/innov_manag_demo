@@ -1,20 +1,20 @@
-import React from 'react'
-import Layout from './../Layout'
-import { AiFillPlusCircle } from 'react-icons/ai'
-import axios from 'axios'
+import React from 'react';
+import Layout from './../Layout';
+import { AiFillPlusCircle } from 'react-icons/ai';
+import axios from 'axios';
 
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
-import Cli from '../components/Cli'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Cli from '../components/Cli';
 
-import AddClient from '../components/AddClient'
-import { useNavigate } from 'react-router-dom'
+import AddClient from '../components/AddClient';
+import { useNavigate } from 'react-router-dom';
 
 function Client() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const [addClientPopup, setAddClientPopup] = React.useState(false)
-  const [clients, setClients] = React.useState([])
+  const [addClientPopup, setAddClientPopup] = React.useState(false);
+  const [clients, setClients] = React.useState([]);
   async function getAllClients() {
     try {
       const { data } = await axios.get(
@@ -24,14 +24,15 @@ function Client() {
             token: localStorage.getItem('token'),
           },
         }
-      )
+      );
+
       if (data.status === 'ok') {
-        setClients(data.data)
+        setClients(data.data);
       } else {
-        navigate(`/`)
+        navigate(`/`);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
   async function deleteClient(id) {
@@ -43,14 +44,14 @@ function Client() {
             token: localStorage.getItem('token'),
           },
         }
-      )
-      console.log(data)
+      );
+      console.log(data);
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
     if (data.data.status === 'ok') {
-      const filteredClients = clients.filter((client) => id !== client.id)
-      setClients(filteredClients)
+      const filteredClients = clients.filter((client) => id !== client.id);
+      setClients(filteredClients);
       toast.success('client a été retirer avec succées', {
         position: 'top-center',
         autoClose: 5000,
@@ -60,7 +61,7 @@ function Client() {
         draggable: true,
         progress: undefined,
         theme: 'dark',
-      })
+      });
     } else {
       toast.error('probleme de retirer cette client!', {
         position: 'top-center',
@@ -71,12 +72,12 @@ function Client() {
         draggable: true,
         progress: undefined,
         theme: 'dark',
-      })
+      });
     }
   }
   React.useEffect(() => {
-    getAllClients()
-  }, [])
+    getAllClients();
+  }, []);
   return (
     <>
       <Layout>
@@ -94,13 +95,16 @@ function Client() {
           )}
           {/*Clients*/}
           <div className='prods mt-7 flex flex-col justify-center items-center gap-3  '>
-            {clients.map((client, index) => (
-              <Cli
-                key={index}
-                client={{ ...client }}
-                deleteClient={deleteClient}
-              />
-            ))}
+            {clients.map((client, index) => {
+              console.log(client);
+              return (
+                <Cli
+                  key={index}
+                  client={{ ...client }}
+                  deleteClient={deleteClient}
+                />
+              );
+            })}
           </div>
         </div>
         {/*NOTIFICATION*/}
@@ -127,7 +131,7 @@ function Client() {
         )}
       </Layout>
     </>
-  )
+  );
 }
 
-export default Client
+export default Client;

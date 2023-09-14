@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Aug 13, 2023 at 01:46 PM
+-- Generation Time: Sep 14, 2023 at 09:01 PM
 -- Server version: 5.7.24
 -- PHP Version: 8.0.1
 
@@ -39,9 +39,17 @@ CREATE TABLE `clients` (
 --
 
 INSERT INTO `clients` (`id_client`, `nom`, `tel_client`, `statue`) VALUES
+(1, 'passagé', '90990909090', 1),
 (2, 'dem', '321', 0),
 (3, 'moncef', '123649', 0),
-(7, 'bh', '99966633', 1);
+(7, 'bouazza', '28814441', 1),
+(45, 'wa7ed okhor met3edi', '9872316', 0),
+(10000, 'client fidele1', '16151413', 1),
+(10002, 'zebi', '12365478', 0),
+(10003, 'test', '000000', 0),
+(10004, 'wahed met3edi', '456456', 0),
+(10005, 'okht li t3ada 9bila', '32654511', 0),
+(10006, 'yfz1', '12122121', 0);
 
 -- --------------------------------------------------------
 
@@ -83,6 +91,10 @@ CREATE TABLE `liste_prod` (
 --
 
 INSERT INTO `liste_prod` (`id_prod`, `id_v`, `qte`) VALUES
+('01', 16, 1),
+('01', 18, 5),
+('01', 20, 1),
+('las15', 15, 6),
 ('ref1', 4, 1),
 ('ref1', 5, 1),
 ('ref1', 6, 1),
@@ -93,6 +105,9 @@ INSERT INTO `liste_prod` (`id_prod`, `id_v`, `qte`) VALUES
 ('ref1', 11, 3),
 ('ref1', 12, 1),
 ('ref1', 13, 3),
+('refprodjdid', 17, 1),
+('refprodjdid', 19, 2),
+('refprodjdid', 20, 1),
 ('taeat', 14, 6);
 
 -- --------------------------------------------------------
@@ -116,7 +131,11 @@ CREATE TABLE `produits` (
 --
 
 INSERT INTO `produits` (`id_prod`, `nom`, `img`, `qte`, `prix`, `id_four`, `statue`) VALUES
+('01', 'ragnarogue', 'defaultImg.png', 7, '12.000', 22, 1),
+('las15', 'liquide 100 ml melon', 'defaultImg.png', 4, '12.000', 22, 0),
+('prodref1', 'prod1', 'defaultImg.png', 2, '25.000', 22, 0),
 ('ref1', 'prodnewnew55', 'defaultImg.png', 69, '111.000', 21, 0),
+('refprodjdid', 'prod jdid jdid', 'defaultImg.png', 2, '500.000', 22, 1),
 ('taeat', 'ateae', '65carbon (12).png', 94, '2000.000', 21, 0);
 
 -- --------------------------------------------------------
@@ -139,8 +158,12 @@ CREATE TABLE `utilisateurs` (
 --
 
 INSERT INTO `utilisateurs` (`id_utilisateur`, `nom`, `tel_u`, `mdp`, `role`, `statue`) VALUES
-(15, 'ahmedMSK', '1234', '963', 'admin', 1),
-(16, 'medKhouAhmed', '456654', '369', 'admin', 0);
+(15, 'gamha', '', '215487', 'vendeur', 1),
+(16, 'medKhouAhmed', '456654', '369', 'admin', 0),
+(17, 'hamza', '', '98528971', 'comptable', 1),
+(18, 'admin1', NULL, '98528971', 'admin', 1),
+(19, 'admin2', '0', '96083579', 'admin', 1),
+(20, 'admin', NULL, 'admin', 'admin', 1);
 
 -- --------------------------------------------------------
 
@@ -155,26 +178,31 @@ CREATE TABLE `ventes` (
   `prix_donnee` decimal(15,3) NOT NULL,
   `remise` decimal(6,3) NOT NULL DEFAULT '0.000',
   `id_utilisateur` int(11) NOT NULL,
-  `date_v` datetime NOT NULL,
-  `statue` tinyint(1) NOT NULL DEFAULT '1'
+  `date_v` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ventes`
 --
 
-INSERT INTO `ventes` (`id_v`, `id_client`, `prix_tot`, `prix_donnee`, `remise`, `id_utilisateur`, `date_v`, `statue`) VALUES
-(4, 2, '150.000', '150.000', '0.000', 15, '2023-08-10 16:49:37', 1),
-(5, 3, '135.000', '40.000', '10.000', 15, '2023-08-10 16:51:36', 0),
-(6, 3, '99.900', '50.000', '10.000', 15, '2023-08-10 19:47:45', 0),
-(7, 7, '1163.000', '22.000', '0.000', 15, '2023-08-10 19:50:06', 1),
-(8, 3, '111.000', '100.000', '0.000', 16, '2023-08-10 20:08:37', 1),
-(9, 2, '710.600', '748.000', '5.000', 16, '2023-08-10 20:26:12', 0),
-(10, 2, '1898.100', '100.000', '10.000', 15, '2023-08-11 13:43:52', 1),
-(11, 2, '299.700', '299.700', '10.000', 15, '2023-08-11 13:46:45', 1),
-(12, 3, '109.890', '109.890', '1.000', 15, '2023-08-11 13:48:48', 1),
-(13, 2, '9299.700', '9299.700', '10.000', 15, '2023-08-11 14:56:32', 1),
-(14, 3, '12000.000', '12000.000', '0.000', 15, '2023-08-11 15:05:19', 0);
+INSERT INTO `ventes` (`id_v`, `id_client`, `prix_tot`, `prix_donnee`, `remise`, `id_utilisateur`, `date_v`) VALUES
+(4, 2, '150.000', '150.000', '0.000', 15, '2023-08-10 16:49:37'),
+(5, 3, '135.000', '121.500', '10.000', 15, '2023-08-10 16:51:36'),
+(6, 3, '99.900', '50.000', '10.000', 15, '2023-08-10 19:47:45'),
+(7, 7, '1163.000', '22.000', '0.000', 15, '2023-08-10 19:50:06'),
+(8, 3, '111.000', '100.000', '0.000', 16, '2023-08-10 20:08:37'),
+(9, 2, '710.600', '748.000', '5.000', 16, '2023-08-10 20:26:12'),
+(10, 2, '1898.100', '100.000', '10.000', 15, '2023-08-11 13:43:52'),
+(11, 2, '299.700', '299.700', '10.000', 15, '2023-08-11 13:46:45'),
+(12, 3, '109.890', '109.890', '1.000', 15, '2023-08-11 13:48:48'),
+(13, 2, '9299.700', '9299.700', '10.000', 15, '2023-08-11 14:56:32'),
+(14, 3, '12000.000', '12000.000', '0.000', 15, '2023-08-11 15:05:19'),
+(15, 7, '64.800', '64.800', '10.000', 18, '2023-09-14 18:20:33'),
+(16, 7, '10.800', '9.720', '10.000', 18, '2023-09-14 18:31:12'),
+(17, 1, '500.000', '500.000', '0.000', 20, '2023-09-14 20:10:40'),
+(18, 10000, '54.000', '50.000', '10.000', 20, '2023-09-14 21:37:05'),
+(19, 1, '750.000', '750.000', '25.000', 20, '2023-09-14 21:37:26'),
+(20, 10000, '501.760', '400.000', '2.000', 20, '2023-09-14 21:37:51');
 
 --
 -- Indexes for dumped tables
@@ -228,7 +256,7 @@ ALTER TABLE `ventes`
 -- AUTO_INCREMENT for table `clients`
 --
 ALTER TABLE `clients`
-  MODIFY `id_client` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_client` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10007;
 
 --
 -- AUTO_INCREMENT for table `fournisseurs`
@@ -240,13 +268,13 @@ ALTER TABLE `fournisseurs`
 -- AUTO_INCREMENT for table `utilisateurs`
 --
 ALTER TABLE `utilisateurs`
-  MODIFY `id_utilisateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id_utilisateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `ventes`
 --
 ALTER TABLE `ventes`
-  MODIFY `id_v` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id_v` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- Constraints for dumped tables
@@ -269,7 +297,7 @@ ALTER TABLE `produits`
 -- Constraints for table `ventes`
 --
 ALTER TABLE `ventes`
-  ADD CONSTRAINT `ventes_ibfk_1` FOREIGN KEY (`id_client`) REFERENCES `clients` (`id_client`),
+  ADD CONSTRAINT `ventes_ibfk_1` FOREIGN KEY (`id_client`) REFERENCES `clients` (`id_client`) ON UPDATE CASCADE,
   ADD CONSTRAINT `ventes_ibfk_2` FOREIGN KEY (`id_utilisateur`) REFERENCES `utilisateurs` (`id_utilisateur`);
 COMMIT;
 

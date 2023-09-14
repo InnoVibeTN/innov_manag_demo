@@ -1,10 +1,10 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-import { CiMenuBurger } from 'react-icons/ci'
+import { CiMenuBurger } from 'react-icons/ci';
 
-import { RiCloseFill } from 'react-icons/ri'
-import { useNavigate } from 'react-router-dom'
+import { RiCloseFill } from 'react-icons/ri';
+import { useNavigate } from 'react-router-dom';
 
 const routes = [
   { route: 'produit', access: ['vendeur', 'admin', 'comptable'] },
@@ -14,25 +14,25 @@ const routes = [
   { route: 'vente', access: ['vendeur', 'admin', 'comptable'] },
 
   { route: 'statistique', access: ['admin', 'comptable'] },
-]
+];
 function Nav() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const [hidden, setHidden] = React.useState(true)
+  const [hidden, setHidden] = React.useState(true);
   React.useEffect(() => {
     //fetching data
-  }, [])
+  }, []);
   function handleLogout() {
-    localStorage.clear()
-    navigate(`/`)
+    localStorage.clear();
+    navigate(`/`);
   }
-  const currentRoute = window.location.pathname.substring(1)
+  const currentRoute = window.location.pathname.substring(1);
   return (
     <>
       {hidden && (
         <CiMenuBurger
           className='absolute top-2 left-5 text-third text-3xl font-bold  cursor-pointer  lg:hidden'
-          onClick={() => setHidden((prev) => false)}
+          onClick={() => setHidden(() => false)}
         />
       )}
 
@@ -44,7 +44,7 @@ function Nav() {
         {!hidden && (
           <RiCloseFill
             className='absolute top-5 left-5 text-3xl font-bold text-red-500  cursor-pointer lg:hidden'
-            onClick={() => setHidden((prev) => true)}
+            onClick={() => setHidden(() => true)}
           />
         )}
         <h3 className='font-semibold text-xl'>
@@ -73,7 +73,7 @@ function Nav() {
         </div>
       </nav>
     </>
-  )
+  );
 }
 
-export default Nav
+export default Nav;
